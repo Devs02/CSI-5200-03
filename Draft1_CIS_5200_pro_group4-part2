@@ -16,6 +16,10 @@
   • 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> use dnayak;
 
 
+
+
+
+
 DROP TABLE IF EXISTS citation;
 --create the citation table on comma-separated sensor data
 CREATE EXTERNAL TABLE IF NOT EXISTS citation (Patent BIGINT, Cit_Date DATE,
@@ -30,6 +34,8 @@ LOCATION '/user/dnayak/project4/citation'
 TBLPROPERTIES ('skip.header.line.count'='1');
 
 LOAD DATA INPATH  '/user/dnayak/project4/citation.csv' OVERWRITE INTO TABLE citation;
+
+
 
 
 
@@ -49,7 +55,42 @@ TBLPROPERTIES ('skip.header.line.count'='1');
 
 LOAD DATA INPATH '/user/dnayak/project4/assignee.csv' OVERWRITE INTO TABLE assignee;
 
+
+
+
+
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> show create table assignee;
++-----------------------------------------------------------------+--+
+|                         createtab_stmt                          |
++-----------------------------------------------------------------+--+
+| CREATE EXTERNAL TABLE `assignee`(                               |
+|   `patent` bigint,                                              |
+|   `asgtypee` int,                                               |
+|   `assignee` string,                                            |
+|   `city` string,                                                |
+|   `country` string,                                             |
+|   `nationality` string,                                         |
+|   `residence` string,                                           |
+|   `asgseq` bigint)                                              |
+| ROW FORMAT DELIMITED                                            |
+|   FIELDS TERMINATED BY ','                                      |
+| STORED AS INPUTFORMAT                                           |
+|   'org.apache.hadoop.mapred.TextInputFormat'                    |
+| OUTPUTFORMAT                                                    |
+|   'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'  |
+| LOCATION                                                        |
+|   'hdfs://mycluster/user/dnayak/project4/assignee'              |
+| TBLPROPERTIES (                                                 |
+|   'COLUMN_STATS_ACCURATE'='true',                               |
+|   'numFiles'='1',                                               |
+|   'skip.header.line.count'='1',                                 |
+|   'totalSize'='265714510',                                      |
+|   'transient_lastDdlTime'='1544005049')                         |
++-----------------------------------------------------------------+--+
+23 rows selected (0.772 seconds)
+
+
+
 
 
 DROP TABLE IF EXISTS invpat;
@@ -82,6 +123,10 @@ TBLPROPERTIES ('skip.header.line.count'='1');
 
 LOAD DATA INPATH '/user/dnayak/project4/invpat.csv' OVERWRITE INTO TABLE invpat;
 
+
+
+
+
 DROP TABLE IF EXISTS class;
 CREATE EXTERNAL TABLE IF NOT EXISTS class (Patent BIGINT,
 Prim INT,
@@ -93,8 +138,6 @@ LOCATION '/user/dnayak/project4/class'
 TBLPROPERTIES ('skip.header.line.count'='1');
 
 LOAD DATA INPATH '/user/dnayak/project4/class.csv' OVERWRITE INTO TABLE class;
-
-
 
 
 
@@ -141,6 +184,10 @@ TBLPROPERTIES ('skip.header.line.count'='1')
 LOAD DATA INPATH '/user/dnayak/project4/lawyer.csv' OVERWRITE INTO TABLE lawyer;
 
 
+
+
+
+
 DROP TABLE IF EXISTS patent ;
 CREATE EXTERNAL TABLE IF NOT EXISTS patent(Patent BIGINT,
 Kind STRING,
@@ -159,6 +206,9 @@ TBLPROPERTIES ('skip.header.line.count'='1');
 
 LOAD DATA INPATH '/user/dnayak/project4/patent.csv' OVERWRITE INTO TABLE patent;
 
+
+
+
 DROP TABLE IF EXISTS patdesc ;
 CREATE EXTERNAL TABLE IF NOT EXISTS patdesc(Patent STRING,
 Abstract STRING,
@@ -170,6 +220,8 @@ TBLPROPERTIES ('skip.header.line.count'='2');
 
 LOAD DATA INPATH '/user/dnayak/project4/patdesc.csv' OVERWRITE INTO TABLE patdesc;
 
+
+
     • 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(*) from table where title like '%machine learning%';
 
 
@@ -178,6 +230,8 @@ Analysis:
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(*) from patdesc where title like '%artificial intelligenc%';
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(*) from patdesc where title like '%deep learning%';
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(*) from patdesc where title like '%statistical learning%';
+
+
 
 DROP TABLE IF EXISTS patentcount ;
 CREATE EXTERNAL TABLE IF NOT EXISTS patentcount(Title  STRING, Count BIGINT) ROW FORMAT DELIMITED FIELDS TERMINATED BY ','LOCATION '/user/dnayak/project4/patentcount';
@@ -189,6 +243,8 @@ INSERT INTO TABLE patentcount (title, count) SELECT 'Artificial Intelligence', c
 INSERT INTO TABLE patentcount (title, count) SELECT 'Deep Learning', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%deep learning%';
 INSERT INTO TABLE patentcount (title, count) SELECT 'Stastistical Learning', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%stastistical learning%';
 INSERT INTO TABLE patentcount (title, count) SELECT 'Neural Network', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%neural network%';
+
+
 
 -bash-4.1$ hdfs dfs -get /user/dnayak/project4/patentcount patentcount.csv
 -bash-4.1$ cd patentcount/
@@ -204,6 +260,7 @@ drwx------ 10 dnayak dnayak 4096 Dec  5 11:37 ..
 -rw-r--r--  1 dnayak dnayak   24 Dec  5 11:37 000000_0_copy_5
 -rw-r--r--  1 dnayak dnayak   19 Dec  5 11:37 000000_0_copy_6
 
+
 -bash-4.1$ cat 000000_0 000000_0_copy_1 000000_0_copy_2  000000_0_copy_3  000000_0_copy_4
 000000_0_copy_5  000000_0_copy_6  > patentcount.csv
 -bash-4.1$ cd frq_assignee/
@@ -211,10 +268,10 @@ drwx------ 10 dnayak dnayak 4096 Dec  5 11:37 ..
 000000_0         000000_0_copy_2  000000_0_copy_4  000000_0_copy_6
 000000_0_copy_1  000000_0_copy_3  000000_0_copy_5  patentcount.csv
 
-
+To Download Data:-
 scp dnayak@129.150.205.113:/home/dnayak/patentcount/patentcount.csv  /home/drsherman/Downloads/
 dnayak@129.150.205.113's password: 
-patentcount.csv                                                                       100%  141     2.6KB/s   00:00    
+patentcount.csv                                                                       100%  141     2.6KB/s   00:00   
 
 
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(distinct patent) from dnayak.assignee where assignee like '%Google Inc.%' and patent is not NULL;
@@ -225,6 +282,9 @@ patentcount.csv                                                                 
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(distinct patent) from dnayak.assignee where assignee like '%Apple Inc.%' and patent is not NULL;
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select * from dnayak.assignee where assignee like '%Amazon%' and patent is not NULL limit 100;
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select * from dnayak.assignee where assignee like '%QUALCOMM Incorporated%' and patent is not NULL limit 100;
+
+
+
 
 DROP TABLE IF EXISTS frq_assignee ;
 CREATE EXTERNAL TABLE IF NOT EXISTS frq_assignee (Patent  STRING, Count BIGINT) ROW FORMAT DELIMITED FIELDS TERMINATED BY ','LOCATION '/user/dnayak/project4/frq_assignee';
@@ -247,13 +307,7 @@ assignee.csv  citation.csv  frq_assignee  inventor.csv  lawyer.csv  patdesc.csv 
 000000_0_copy_1  000000_0_copy_3  000000_0_copy_5  frq_assignee.csv
 
 
-scp dnayak@129.150.205.113:/home/dnayak/patentcount/patentcount.csv  /home/drsherman/Downloads/
+To Download Data:-
+scp dnayak@129.150.205.113:/home/dnayak/frq_assignee/frq_assignee.csv  /home/drsherman/Downloads/
 dnayak@129.150.205.113's password: 
-Permission denied, please try again.
-dnayak@129.150.205.113's password: 
-patentcount.csv                                                                       100%  141     2.6KB/s   00:00   
-
-
-scp dnayak@129.150.205.113:/home/dnayak/patentcount/patentcount.csv  /home/drsherman/Downloads/
-dnayak@129.150.205.113's password: 
-patentcount.csv  
+frq_assignee.csv                                                                       100%  141     2.6KB/s   00:00   
