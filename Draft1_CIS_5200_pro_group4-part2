@@ -1,6 +1,6 @@
     •  ssh dnayak@129.150.206.199
-    • -bash-4.1$ wget http://storage.googleapis.com/patents/grant_full_text/2014/ipg140107.zip
-    • -bash-4.1$ unzip ipg140107.zip
+    • -bash-4.1$ wget http://storage.googleapis.com/patents/grant_full_text/2013/ipg130101.zip
+    • -bash-4.1$ unzip ipg130101.zip
     
     After this i have used https://github.com/funginstitute/patentprocessor to parse the file which is now in CVS formate.
     
