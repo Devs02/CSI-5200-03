@@ -310,10 +310,12 @@ total 32
 -rw-r--r-- 1 dnayak dnayak 11 Dec  5 15:13 000000_0_copy_3
 -rw-r--r-- 1 dnayak dnayak 16 Dec  5 15:13 000000_0_copy_4
 -rw-r--r-- 1 dnayak dnayak 20 Dec  5 15:13 000000_0_copy_5
+-rw-r--r-- 1 dnayak dnayak 14 Dec  5 15:13 000000_0_copy_6
 -rw-rw-r-- 1 dnayak dnayak 59 Dec  7 00:43 frq_assignee.csv
 
 
 Now you have to merge the two output files to a file named “frq_assignee.csv” using the following:
+
 -bash-4.1$ ls
 assignee.csv  citation.csv  frq_assignee  inventor.csv  lawyer.csv  patdesc.csv  patent.csv
 -bash-4.1$ cat 000000_0 000000_0_copy_2  000000_0_copy_4  000000_0_copy_6
