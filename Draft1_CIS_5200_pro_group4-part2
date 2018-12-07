@@ -212,25 +212,7 @@ drwx------ 10 dnayak dnayak 4096 Dec  5 11:37 ..
 -rw-r--r--  1 dnayak dnayak   24 Dec  5 11:37 000000_0_copy_5
 -rw-r--r--  1 dnayak dnayak   19 Dec  5 11:37 000000_0_copy_6
 
-Now you have to merge the two output files to a file named “senti_out.csv” using the following:
--bash-4.1$ cat 000000_0 000000_0_copy_1 000000_0_copy_2 000000_0_copy_3 000000_0_copy_4 000000_0_copy_5 000000_0_copy_6 > patentcount.csv
--bash-4.1$ ls -al
-total 40
-drwxrwxr-x  2 dnayak dnayak 4096 Dec  5 11:38 .
-drwx------ 10 dnayak dnayak 4096 Dec  5 11:37 ..
--rw-r--r--  1 dnayak dnayak   20 Dec  5 11:37 000000_0
--rw-r--r--  1 dnayak dnayak   20 Dec  5 11:37 000000_0_copy_1
--rw-r--r--  1 dnayak dnayak   15 Dec  5 11:37 000000_0_copy_2
--rw-r--r--  1 dnayak dnayak   27 Dec  5 11:37 000000_0_copy_3
--rw-r--r--  1 dnayak dnayak   16 Dec  5 11:37 000000_0_copy_4
--rw-r--r--  1 dnayak dnayak   24 Dec  5 11:37 000000_0_copy_5
--rw-r--r--  1 dnayak dnayak   19 Dec  5 11:37 000000_0_copy_6
--rw-rw-r--  1 dnayak dnayak  141 Dec  5 11:38 patentcount.csv
-
-
 scp dnayak@129.150.205.113:/home/dnayak/patentcount/patentcount.csv  /home/drsherman/Downloads/
-dnayak@129.150.205.113's password: 
-Permission denied, please try again.
 dnayak@129.150.205.113's password: 
 patentcount.csv                                                                       100%  141     2.6KB/s   00:00    
 
