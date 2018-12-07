@@ -16,8 +16,7 @@
   • 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> use dnayak;
 
 
-
-
+Create Tables:
 
 
 DROP TABLE IF EXISTS citation;
@@ -222,7 +221,6 @@ LOAD DATA INPATH '/user/dnayak/project4/patdesc.csv' OVERWRITE INTO TABLE patdes
 
 
 
-    • 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(*) from table where title like '%machine learning%';
 
 
 Analysis:
@@ -230,6 +228,7 @@ Analysis:
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(*) from patdesc where title like '%artificial intelligenc%';
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(*) from patdesc where title like '%deep learning%';
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(*) from patdesc where title like '%statistical learning%';
+
 
 
 
@@ -243,6 +242,8 @@ INSERT INTO TABLE patentcount (title, count) SELECT 'Artificial Intelligence', c
 INSERT INTO TABLE patentcount (title, count) SELECT 'Deep Learning', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%deep learning%';
 INSERT INTO TABLE patentcount (title, count) SELECT 'Stastistical Learning', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%stastistical learning%';
 INSERT INTO TABLE patentcount (title, count) SELECT 'Neural Network', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%neural network%';
+
+
 
 
 
@@ -282,7 +283,6 @@ patentcount.csv                                                                 
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(distinct patent) from dnayak.assignee where assignee like '%Apple Inc.%' and patent is not NULL;
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select * from dnayak.assignee where assignee like '%Amazon%' and patent is not NULL limit 100;
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select * from dnayak.assignee where assignee like '%QUALCOMM Incorporated%' and patent is not NULL limit 100;
-
 
 
 
