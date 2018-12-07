@@ -1,0 +1,279 @@
+    •  ssh dnayak@129.150.206.199
+    • -bash-4.1$ wget https://bulkdata.uspto.gov/data/patent/grant/redbook/2018/I20180109.tar
+    • -bash-4.1$ unzip I201080109.zip
+    • -bash-4.1$ hdfs dfs -mkdir /user/dnayak/pro_group4
+    • -bash-4.1$ hdfs dfs -put /home/dnayak/assignee.csv /user/dnayak/pro_group4/assignee
+    • -bash-4.1$ hdfs dfs -ls pro_group4
+    • do same for other files.
+
+    • -bash-4.1$ hdfs dfs -chmod -R o+w .
+    • -bash-4.1$ beeline 
+    • beeline> !connect jdbc:hive2://cis5200s3-bdcsce-4.compute-608214094.oraclecloud.internal:2181,cis5200s3-bdcsce-2.compute-608214094.oraclecloud.internal:2181,cis5200s3-bdcsce-3.compute-608214094.oraclecloud.internal:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2?tez.queue.name=interactive bdcsce_admin
+  
+  • 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> use dnayak;
+
+
+DROP TABLE IF EXISTS citation;
+--create the citation table on comma-separated sensor data
+CREATE EXTERNAL TABLE IF NOT EXISTS citation (Patent BIGINT, Cit_Date DATE,
+Cit_Name STRING,
+Cit_Kind STRING,
+Cit_Country STRING,
+Citation STRING,
+Category STRING,
+CitSeq BIGINT)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/user/dnayak/project4/citation'
+TBLPROPERTIES ('skip.header.line.count'='1');
+
+LOAD DATA INPATH  '/user/dnayak/project4/citation.csv' OVERWRITE INTO TABLE citation;
+
+
+
+DROP TABLE IF EXISTS assignee;
+
+CREATE EXTERNAL TABLE IF NOT EXISTS assignee (Patent BIGINT, AsgTypee INT,
+Assignee STRING,
+City STRING,
+Country STRING,
+Nationality STRING,
+Residence STRING,
+AsgSeq BIGINT)
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY ',' 
+LOCATION '/user/dnayak/project4/assignee'
+TBLPROPERTIES ('skip.header.line.count'='1');
+
+LOAD DATA INPATH '/user/dnayak/project4/assignee.csv' OVERWRITE INTO TABLE assignee;
+
+0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> show create table assignee;
+
+
+DROP TABLE IF EXISTS invpat;
+CREATE EXTERNAL TABLE IF NOT EXISTS invpat (Firstname STRING, 
+Middlename STRING,
+Lastname STRING,
+Street STRING,
+City STRING,
+State STRING,
+Country STRING,
+Zipcode STRING,
+Latitude FLOAT,
+Longitube FLOAT,
+InvSeq BIGINT,
+AppYear STRING,
+ApplyYear STRING,
+GYear INT,
+AppDate DATE,
+Assignee STRING,
+AsgNum STRING,
+Class STRING,
+Coauthor STRING,
+Invnum STRING,
+Invnum_N STRING,
+Unique_Record_ID STRING
+ )
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/user/dnayak/project4/invpat'
+TBLPROPERTIES ('skip.header.line.count'='1');
+
+LOAD DATA INPATH '/user/dnayak/project4/invpat.csv' OVERWRITE INTO TABLE invpat;
+
+DROP TABLE IF EXISTS class;
+CREATE EXTERNAL TABLE IF NOT EXISTS class (Patent BIGINT,
+Prim INT,
+Class STRING,
+SubClass STRING
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/user/dnayak/project4/class'
+TBLPROPERTIES ('skip.header.line.count'='1');
+
+LOAD DATA INPATH '/user/dnayak/project4/class.csv' OVERWRITE INTO TABLE class;
+
+
+
+
+
+
+
+
+DROP TABLE IF EXISTS inventor ;
+CREATE EXTERNAL TABLE IF NOT EXISTS inventor (Patent BIGINT,
+Firstname STRING, 
+Middlename STRING,
+Lastname STRING,
+Street STRING,
+City STRING,
+State STRING,
+Country STRING,
+Zipcode STRING,
+Nationality STRING,
+InvSeq BIGINT
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/user/dnayak/project4/inventor'
+TBLPROPERTIES ('skip.header.line.count'='1');
+
+LOAD DATA INPATH '/user/dnayak/project4/inventor.csv' OVERWRITE INTO TABLE inventor;
+
+
+
+
+
+
+DROP TABLE IF EXISTS lawyer ;
+CREATE EXTERNAL TABLE IF NOT EXISTS lawyer(Patent VARCHAR(40),
+Firstname STRING, 
+Lastname STRING,
+LawCountry STRING,
+OrgName STRING,
+LawSeq STRING
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/user/dnayak/project4/lawyer'
+TBLPROPERTIES ('skip.header.line.count'='1')
+;
+
+LOAD DATA INPATH '/user/dnayak/project4/lawyer.csv' OVERWRITE INTO TABLE lawyer;
+
+
+
+
+
+
+
+
+
+
+
+
+
+DROP TABLE IF EXISTS patent ;
+CREATE EXTERNAL TABLE IF NOT EXISTS patent(Patent BIGINT,
+Kind STRING,
+Claims BIGINT,
+AppType STRING,
+AppNum STRING,
+Gdate DATE,
+GYear DATE,
+AppDate DATE,
+AppYear DATE,
+pattype STRING
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/user/dnayak/project4/patent'
+TBLPROPERTIES ('skip.header.line.count'='1');
+
+LOAD DATA INPATH '/user/dnayak/project4/patent.csv' OVERWRITE INTO TABLE patent;
+
+DROP TABLE IF EXISTS patdesc ;
+CREATE EXTERNAL TABLE IF NOT EXISTS patdesc(Patent STRING,
+Abstract STRING,
+Title  STRING
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/user/dnayak/project4/patdesc'
+TBLPROPERTIES ('skip.header.line.count'='2');
+
+LOAD DATA INPATH '/user/dnayak/project4/patdesc.csv' OVERWRITE INTO TABLE patdesc;
+
+    • 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(*) from table where title like '%machine learning%';
+
+
+Analysis:
+0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(distinct title) from patdesc where title like '%machine learning%';
+0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(*) from patdesc where title like '%artificial intelligenc%';
+0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(*) from patdesc where title like '%deep learning%';
+0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(*) from patdesc where title like '%statistical learning%';
+
+DROP TABLE IF EXISTS patentcount ;
+CREATE EXTERNAL TABLE IF NOT EXISTS patentcount(Title  STRING, Count BIGINT) ROW FORMAT DELIMITED FIELDS TERMINATED BY ','LOCATION '/user/dnayak/project4/patentcount';
+
+INSERT INTO TABLE patentcount (title, count) SELECT 'Machine Learning', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%machine learning%';
+INSERT INTO TABLE patentcount (title, count) SELECT 'Predictive Model', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%predictive model%';
+INSERT INTO TABLE patentcount (title, count) SELECT 'Data Mining', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%data mining%';
+INSERT INTO TABLE patentcount (title, count) SELECT 'Artificial Intelligence', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%artificial intelligence%';
+INSERT INTO TABLE patentcount (title, count) SELECT 'Deep Learning', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%deep learning%';
+INSERT INTO TABLE patentcount (title, count) SELECT 'Stastistical Learning', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%stastistical learning%';
+INSERT INTO TABLE patentcount (title, count) SELECT 'Neural Network', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%neural network%';
+
+-bash-4.1$ hdfs dfs -get /user/dnayak/project4/patentcount patentcount.csv
+-bash-4.1$ cd patentcount/
+-bash-4.1$ ls -al
+total 40
+drwxrwxr-x  2 dnayak dnayak 4096 Dec  5 11:38 .
+drwx------ 10 dnayak dnayak 4096 Dec  5 11:37 ..
+-rw-r--r--  1 dnayak dnayak   20 Dec  5 11:37 000000_0
+-rw-r--r--  1 dnayak dnayak   20 Dec  5 11:37 000000_0_copy_1
+-rw-r--r--  1 dnayak dnayak   15 Dec  5 11:37 000000_0_copy_2
+-rw-r--r--  1 dnayak dnayak   27 Dec  5 11:37 000000_0_copy_3
+-rw-r--r--  1 dnayak dnayak   16 Dec  5 11:37 000000_0_copy_4
+-rw-r--r--  1 dnayak dnayak   24 Dec  5 11:37 000000_0_copy_5
+-rw-r--r--  1 dnayak dnayak   19 Dec  5 11:37 000000_0_copy_6
+
+Now you have to merge the two output files to a file named “senti_out.csv” using the following:
+-bash-4.1$ cat 000000_0 000000_0_copy_1 000000_0_copy_2 000000_0_copy_3 000000_0_copy_4 000000_0_copy_5 000000_0_copy_6 > patentcount.csv
+-bash-4.1$ ls -al
+total 40
+drwxrwxr-x  2 dnayak dnayak 4096 Dec  5 11:38 .
+drwx------ 10 dnayak dnayak 4096 Dec  5 11:37 ..
+-rw-r--r--  1 dnayak dnayak   20 Dec  5 11:37 000000_0
+-rw-r--r--  1 dnayak dnayak   20 Dec  5 11:37 000000_0_copy_1
+-rw-r--r--  1 dnayak dnayak   15 Dec  5 11:37 000000_0_copy_2
+-rw-r--r--  1 dnayak dnayak   27 Dec  5 11:37 000000_0_copy_3
+-rw-r--r--  1 dnayak dnayak   16 Dec  5 11:37 000000_0_copy_4
+-rw-r--r--  1 dnayak dnayak   24 Dec  5 11:37 000000_0_copy_5
+-rw-r--r--  1 dnayak dnayak   19 Dec  5 11:37 000000_0_copy_6
+-rw-rw-r--  1 dnayak dnayak  141 Dec  5 11:38 patentcount.csv
+
+
+scp dnayak@129.150.205.113:/home/dnayak/patentcount/patentcount.csv  /home/drsherman/Downloads/
+dnayak@129.150.205.113's password: 
+Permission denied, please try again.
+dnayak@129.150.205.113's password: 
+patentcount.csv                                                                       100%  141     2.6KB/s   00:00    
+
+DROP TABLE IF EXISTS patentcount ;
+CREATE EXTERNAL TABLE IF NOT EXISTS patentcount(Title  STRING, Count BIGINT) ROW FORMAT DELIMITED FIELDS TERMINATED BY ','LOCATION '/user/dnayak/project4/patentcount';
+
+INSERT INTO TABLE patentcount (title, count) SELECT 'Machine Learning', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%machine learning%';
+INSERT INTO TABLE patentcount (title, count) SELECT 'Predictive Model', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%predictive model%';
+INSERT INTO TABLE patentcount (title, count) SELECT 'Data Mining', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%data mining%';
+INSERT INTO TABLE patentcount (title, count) SELECT 'Artificial Intelligence', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%artificial intelligence%';
+INSERT INTO TABLE patentcount (title, count) SELECT 'Deep Learning', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%deep learning%';
+INSERT INTO TABLE patentcount (title, count) SELECT 'Stastistical Learning', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%stastistical learning%';
+INSERT INTO TABLE patentcount (title, count) SELECT 'Neural Network', count(distinct title) as count FROM dnayak.patdesc WHERE title like '%neural network%';
+
+DROP TABLE IF EXISTS frq_assignee ;
+CREATE EXTERNAL TABLE IF NOT EXISTS frq_assignee (Patent  STRING, Count BIGINT) ROW FORMAT DELIMITED FIELDS TERMINATED BY ','LOCATION '/user/dnayak/project4/frq_assignee';
+
+INSERT INTO TABLE frq_assignee (patent, count) select 'Google Inc.',  count(distinct patent) as count from dnayak.assignee where assignee like '%Google Inc.%' and patent is not NULL;
+INSERT INTO TABLE frq_assignee (patent, count) select 'Amazon.com',  count(distinct patent) as count from dnayak.assignee where assignee like '%Amazon.com%' and patent is not NULL;
+INSERT INTO TABLE frq_assignee (patent, count) select 'Facebook',  count(distinct patent) as count from dnayak.assignee where assignee like '%Facebook%' and patent is not NULL;
+INSERT INTO TABLE frq_assignee (patent, count) select 'AT&T',  count(distinct patent) as count from dnayak.assignee where assignee like '%AT&T%' and patent is not NULL;
+INSERT INTO TABLE frq_assignee (patent, count) select 'Apple Inc.',  count(distinct patent) as count from dnayak.assignee where assignee like '%Apple Inc.%' and patent is not NULL;
+INSERT INTO TABLE frq_assignee (patent, count) select 'SONY Corporation',  count(distinct patent) as count from dnayak.assignee where assignee like '%SONY Corporation%' and patent is not NULL;
+INSERT INTO TABLE frq_assignee (patent, count) select 'Samsung',  count(distinct patent) as count from dnayak.assignee where assignee like '%Samsung%' and patent is not NULL;
+
+
+
+0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(distinct patent) from dnayak.assignee where assignee like '%Google Inc.%' and patent is not NULL;
+0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(distinct patent) from dnayak.assignee where assignee like '%Amazon.com%' and patent is not NULL;
+0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(distinct patent) from dnayak.assignee where assignee like '%Intel Corporation%' and patent is not NULL;
+0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(distinct patent) from dnayak.assignee where assignee like '%Facebook, Inc.%' and patent is not NULL;
+0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(distinct patent) from dnayak.assignee where assignee like '%AT&T%' and patent is not NULL;
+0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(distinct patent) from dnayak.assignee where assignee like '%Apple Inc.%' and patent is not NULL;
+0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select * from dnayak.assignee where assignee like '%Amazon%' and patent is not NULL limit 100;
+0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select * from dnayak.assignee where assignee like '%QUALCOMM Incorporated%' and patent is not NULL limit 100;
+
+
+
+
+0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select distinct patent from dnayak.assignee where assignee like '%Google%' and patent is not NULL limit 10;
+
+INSERT OVERWRITE LOCAL DIRECTORY '/user/dnayak/pro' 
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY ',' 
+select * from patentcount;
+
