@@ -55,7 +55,7 @@ TBLPROPERTIES ('skip.header.line.count'='1');
 LOAD DATA INPATH '/user/dnayak/project4/assignee.csv' OVERWRITE INTO TABLE assignee;
 
 
-
+To check the Data Scheme and where your Table is Stored you run this command just to make sure your table is Stored in Your Database.
 
 
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> show create table assignee;
@@ -327,4 +327,4 @@ assignee.csv  citation.csv  frq_assignee  inventor.csv  lawyer.csv  patdesc.csv 
 To Download Data:-
 scp dnayak@129.150.205.113:/home/dnayak/frq_assignee/frq_assignee.csv  /home/drsherman/Downloads/
 dnayak@129.150.205.113's password: 
-frq_assignee.csv                                                                       100%  141     2.6KB/s   00:00   
+frq_assignee.csv                                                                       100%  154     2.6KB/s   00:00   
