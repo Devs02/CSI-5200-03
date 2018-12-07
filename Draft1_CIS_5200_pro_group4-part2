@@ -1,6 +1,6 @@
     •  ssh dnayak@129.150.206.199
-    • -bash-4.1$ wget https://bulkdata.uspto.gov/data/patent/grant/redbook/2018/I20180109.tar
-    • -bash-4.1$ unzip I201080109.zip
+    • -bash-4.1$ wget http://storage.googleapis.com/patents/grant_full_text/2014/ipg140107.zip
+    • -bash-4.1$ unzip ipg140107.zip
     • -bash-4.1$ hdfs dfs -mkdir /user/dnayak/pro_group4
     • -bash-4.1$ hdfs dfs -put /home/dnayak/assignee.csv /user/dnayak/pro_group4/assignee
     • -bash-4.1$ hdfs dfs -ls pro_group4
