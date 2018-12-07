@@ -224,6 +224,7 @@ LOAD DATA INPATH '/user/dnayak/project4/patdesc.csv' OVERWRITE INTO TABLE patdes
 
 
 Analysis:
+
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(distinct title) from patdesc where title like '%machine learning%';
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(*) from patdesc where title like '%artificial intelligenc%';
 0: jdbc:hive2://cis5200s3-bdcsce-4.compute-60> select count(*) from patdesc where title like '%deep learning%';
@@ -247,7 +248,7 @@ INSERT INTO TABLE patentcount (title, count) SELECT 'Neural Network', count(dist
 
 
 
--bash-4.1$ hdfs dfs -get /user/dnayak/project4/patentcount patentcount.csv
+-bash-4.1$ hdfs dfs -get /user/dnayak/project4/patentcount patentcount
 -bash-4.1$ cd patentcount/
 -bash-4.1$ ls -al
 total 40
@@ -261,6 +262,7 @@ drwx------ 10 dnayak dnayak 4096 Dec  5 11:37 ..
 -rw-r--r--  1 dnayak dnayak   24 Dec  5 11:37 000000_0_copy_5
 -rw-r--r--  1 dnayak dnayak   19 Dec  5 11:37 000000_0_copy_6
 
+Now you have to merge the two output files to a file named “patentcount.csv” using the following:
 
 -bash-4.1$ cat 000000_0 000000_0_copy_1 000000_0_copy_2  000000_0_copy_3  000000_0_copy_4
 000000_0_copy_5  000000_0_copy_6  > patentcount.csv
@@ -270,6 +272,7 @@ drwx------ 10 dnayak dnayak 4096 Dec  5 11:37 ..
 000000_0_copy_1  000000_0_copy_3  000000_0_copy_5  patentcount.csv
 
 To Download Data:-
+
 scp dnayak@129.150.205.113:/home/dnayak/patentcount/patentcount.csv  /home/drsherman/Downloads/
 dnayak@129.150.205.113's password: 
 patentcount.csv                                                                       100%  141     2.6KB/s   00:00   
@@ -297,6 +300,20 @@ INSERT INTO TABLE frq_assignee (patent, count) select 'Apple Inc.',  count(disti
 INSERT INTO TABLE frq_assignee (patent, count) select 'SONY Corporation',  count(distinct patent) as count from dnayak.assignee where assignee like '%SONY Corporation%' and patent is not NULL;
 INSERT INTO TABLE frq_assignee (patent, count) select 'Samsung',  count(distinct patent) as count from dnayak.assignee where assignee like '%Samsung%' and patent is not NULL;
 
+-bash-4.1$ hdfs dfs -get /user/dnayak/project4/frq_assignee frq_assignee
+-bash-4.1$ cd frq_assignee/
+-bash-4.1$ ls -l
+total 32
+-rw-r--r-- 1 dnayak dnayak 17 Dec  5 15:13 000000_0
+-rw-r--r-- 1 dnayak dnayak 15 Dec  5 15:13 000000_0_copy_1
+-rw-r--r-- 1 dnayak dnayak 12 Dec  5 15:13 000000_0_copy_2
+-rw-r--r-- 1 dnayak dnayak 11 Dec  5 15:13 000000_0_copy_3
+-rw-r--r-- 1 dnayak dnayak 16 Dec  5 15:13 000000_0_copy_4
+-rw-r--r-- 1 dnayak dnayak 20 Dec  5 15:13 000000_0_copy_5
+-rw-rw-r-- 1 dnayak dnayak 59 Dec  7 00:43 frq_assignee.csv
+
+
+Now you have to merge the two output files to a file named “frq_assignee.csv” using the following:
 -bash-4.1$ ls
 assignee.csv  citation.csv  frq_assignee  inventor.csv  lawyer.csv  patdesc.csv  patent.csv
 -bash-4.1$ cat 000000_0 000000_0_copy_2  000000_0_copy_4  000000_0_copy_6
